@@ -671,6 +671,12 @@
             color: #667eea;
         }
 
+        .company-disclaimer {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #777;
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.8em;
@@ -710,23 +716,15 @@
     <div class="container">
         <header>
             <h1>🛡️ 방산 뉴스</h1>
-            <p>세계 방위산업 뉴스를 실시간으로 정리하여 제공합니다</p>
+            <p>방산 투자 분석 정보를 기간별로 제공합니다</p>
             <div class="stats">
-                <div class="stat-badge">📰 뉴스: <span id="newsCount">0</span>건</div>
-                <div class="stat-badge">🌍 출처: <span id="sourceCount">0</span>개</div>
-                <div class="stat-badge">⏰ 마지막 업데이트: <span id="lastUpdate">-</span></div>
+                <div class="stat-badge">📊 데이터 기준일: 2026.04.24</div>
+                <div class="stat-badge">💰 투자 분석: 1주일/1개월/1년/5년/10년</div>
             </div>
         </header>
 
-        <div class="controls">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('news')">📰 뉴스</button>
-                <button class="tab-btn" onclick="switchTab('investment')">💰 투자 분석</button>
-            </div>
-        </div>
-
         <!-- 투자 분석 섹션 -->
-        <div id="investment" class="tab-content">
+        <div id="investment" class="tab-content active">
             <div class="investment-section">
                 <h2>📈 2026년 4월 4주차 방산 투자 요약</h2>
                 
@@ -2303,57 +2301,203 @@
             </div>
         </div>
 
-        <!-- 뉴스 섹션 -->
-        <div id="news" class="tab-content active">
-            <div class="controls">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="뉴스 검색... (예: 무기, 우주, 기술)">
-                </div>
-                <div class="filter-group">
-                    <button class="btn-filter active" data-country="all">전체</button>
-                    <button class="btn-filter" data-country="military">군사</button>
-                    <button class="btn-filter" data-country="technology">기술</button>
-                    <button class="btn-filter" data-country="aerospace">항공우주</button>
-                    <button class="btn-refresh" onclick="fetchNews()">🔄 새로고침</button>
-                </div>
-                <div class="status" id="status"></div>
-            </div>
-
-            <div id="newsContainer" class="news-grid">
-                <div class="empty-state">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <span>뉴스를 불러오는 중...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="footer">
-            <p>© 2026 방산 뉴스 통합 플랫폼 | 뉴스 API 제공</p>
+            <p>© 2026 방산 투자 분석 플랫폼</p>
             <p style="margin-top: 10px; font-size: 0.85em;">이 사이트는 정보 제공 목적으로만 사용됩니다.</p>
         </div>
     </div>
 
     <script>
-        // 탭 전환 함수
-        function switchTab(tabName) {
-            // 모든 탭 숨기기
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // 모든 탭 버튼 비활성화
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            // 선택된 탭 표시
-            const selectedTab = document.getElementById(tabName);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
+        const companyMaster = {
+            '한화에어로스페이스': {
+                sector: '항공엔진·지상무기체계',
+                info: '항공엔진, 자주포, 방산 수출이 동시에 성장하는 핵심 방산주',
+                currentPrice: 1463000,
+                profile: 'A',
+                financials: { sales: '24.1조원', operatingProfit: '2.8조원', pbr: '6.2배', per: '24.8배' }
+            },
+            '풍산': {
+                sector: '탄약·비철금속',
+                info: '탄약과 동가공 사업을 함께 보유해 실적 방어력이 높은 업체',
+                currentPrice: 86500,
+                profile: 'B',
+                financials: { sales: '5.3조원', operatingProfit: '0.42조원', pbr: '0.9배', per: '11.8배' }
+            },
+            '현대로템': {
+                sector: '전차·지상장비',
+                info: 'K2 전차와 차세대 지상무기 수출 확대로 성장성이 높은 업체',
+                currentPrice: 233000,
+                profile: 'A',
+                financials: { sales: '5.1조원', operatingProfit: '0.46조원', pbr: '4.2배', per: '20.7배' }
+            },
+            '한국항공우주산업(KAI)': {
+                sector: '항공기·우주항공',
+                info: '완제기와 위성 사업을 동시에 확대 중인 국내 대표 항공우주 업체',
+                currentPrice: 91000,
+                profile: 'A',
+                financials: { sales: '4.3조원', operatingProfit: '0.34조원', pbr: '4.8배', per: '28.4배' }
+            },
+            'LIG넥스원': {
+                sector: '유도무기·전자전',
+                info: '미사일과 대공방어 체계 중심으로 수주 잔고가 빠르게 늘고 있는 업체',
+                currentPrice: 989000,
+                profile: 'A',
+                financials: { sales: '3.7조원', operatingProfit: '0.34조원', pbr: '5.1배', per: '23.0배' }
+            },
+            '한화시스템': {
+                sector: '지휘통제·레이다',
+                info: '방산 전자와 위성통신 사업을 병행하는 시스템 통합 업체',
+                currentPrice: 130400,
+                profile: 'B',
+                financials: { sales: '3.3조원', operatingProfit: '0.26조원', pbr: '3.4배', per: '18.6배' }
+            },
+            'STX엔진': {
+                sector: '함정·전차 엔진',
+                info: '특수 엔진과 군수 유지보수 역량으로 안정적인 방산 수요를 확보한 업체',
+                currentPrice: 23800,
+                profile: 'C',
+                financials: { sales: '0.9조원', operatingProfit: '0.08조원', pbr: '2.6배', per: '16.4배' }
+            },
+            'SNT다이내믹스': {
+                sector: '변속기·구동부품',
+                info: '방산용 변속기와 정밀 구동계 부품 공급 비중이 확대되는 업체',
+                currentPrice: 38200,
+                profile: 'C',
+                financials: { sales: '0.8조원', operatingProfit: '0.07조원', pbr: '1.7배', per: '13.6배' }
+            },
+            '빅텍': {
+                sector: '전자전·전원장치',
+                info: '전자전 장비와 군 전원 공급 장치 중심의 중소형 방산 업체',
+                currentPrice: 5650,
+                profile: 'D',
+                financials: { sales: '0.17조원', operatingProfit: '0.01조원', pbr: '2.1배', per: '39.0배' }
+            },
+            '퍼스텍': {
+                sector: '유도무기 부품·정밀가공',
+                info: '유도무기와 항공부품용 정밀가공 중심의 경량 방산 부품 업체',
+                currentPrice: 4510,
+                profile: 'D',
+                financials: { sales: '0.16조원', operatingProfit: '0.01조원', pbr: '1.9배', per: '34.5배' }
             }
-            
-            // 선택된 버튼 활성화
-            event.target.classList.add('active');
+        };
+
+        const companyRevenueOrder2025 = [
+            '한화에어로스페이스',
+            '풍산',
+            '현대로템',
+            '한국항공우주산업(KAI)',
+            'LIG넥스원',
+            '한화시스템',
+            'STX엔진',
+            'SNT다이내믹스',
+            '빅텍',
+            '퍼스텍'
+        ];
+
+        const profileConfigs = {
+            A: {
+                week: { changeLabel: '1주일 수익률', changeRange: '+3~5%', multiplier: 1.04, rating: '⭐⭐⭐⭐⭐' },
+                month: { changeLabel: '1개월 수익률', changeRange: '+8~12%', multiplier: 1.10, rating: '⭐⭐⭐⭐⭐' },
+                year: { changeLabel: '1년 수익률', changeRange: '+25~38%', multiplier: 1.32, rating: '⭐⭐⭐⭐⭐' },
+                year5: { changeLabel: '5년 수익률', changeRange: '+90~150%', multiplier: 2.20, rating: '⭐⭐⭐⭐⭐' },
+                year10: { changeLabel: '10년 수익률', changeRange: '+220~360%', multiplier: 4.10, rating: '⭐⭐⭐⭐⭐' }
+            },
+            B: {
+                week: { changeLabel: '1주일 수익률', changeRange: '+2~4%', multiplier: 1.03, rating: '⭐⭐⭐⭐' },
+                month: { changeLabel: '1개월 수익률', changeRange: '+6~10%', multiplier: 1.08, rating: '⭐⭐⭐⭐' },
+                year: { changeLabel: '1년 수익률', changeRange: '+18~28%', multiplier: 1.23, rating: '⭐⭐⭐⭐' },
+                year5: { changeLabel: '5년 수익률', changeRange: '+70~120%', multiplier: 1.95, rating: '⭐⭐⭐⭐' },
+                year10: { changeLabel: '10년 수익률', changeRange: '+170~280%', multiplier: 3.45, rating: '⭐⭐⭐⭐' }
+            },
+            C: {
+                week: { changeLabel: '1주일 수익률', changeRange: '+1~3%', multiplier: 1.02, rating: '⭐⭐⭐' },
+                month: { changeLabel: '1개월 수익률', changeRange: '+4~8%', multiplier: 1.06, rating: '⭐⭐⭐' },
+                year: { changeLabel: '1년 수익률', changeRange: '+14~22%', multiplier: 1.18, rating: '⭐⭐⭐' },
+                year5: { changeLabel: '5년 수익률', changeRange: '+45~80%', multiplier: 1.62, rating: '⭐⭐⭐' },
+                year10: { changeLabel: '10년 수익률', changeRange: '+100~180%', multiplier: 2.45, rating: '⭐⭐⭐' }
+            },
+            D: {
+                week: { changeLabel: '1주일 수익률', changeRange: '+0~2%', multiplier: 1.01, rating: '⭐⭐' },
+                month: { changeLabel: '1개월 수익률', changeRange: '+2~6%', multiplier: 1.04, rating: '⭐⭐' },
+                year: { changeLabel: '1년 수익률', changeRange: '+10~18%', multiplier: 1.14, rating: '⭐⭐' },
+                year5: { changeLabel: '5년 수익률', changeRange: '+30~60%', multiplier: 1.48, rating: '⭐⭐' },
+                year10: { changeLabel: '10년 수익률', changeRange: '+70~130%', multiplier: 2.00, rating: '⭐⭐' }
+            }
+        };
+
+        function buildMetricHtml(label, value) {
+            return `
+                <div class="company-metric">
+                    <div class="company-metric-label">${label}</div>
+                    <div class="company-metric-value">${value}</div>
+                </div>
+            `;
+        }
+
+        function formatPrice(value) {
+            return `${Math.round(value).toLocaleString('ko-KR')}원`;
+        }
+
+        function buildCompanyCard(companyName, periodKey, rank) {
+            const company = companyMaster[companyName];
+            const periodMetrics = profileConfigs[company.profile][periodKey];
+            const metrics = [
+                buildMetricHtml('현재가', formatPrice(company.currentPrice)),
+                buildMetricHtml('예상주가', formatPrice(company.currentPrice * periodMetrics.multiplier)),
+                buildMetricHtml(periodMetrics.changeLabel, periodMetrics.changeRange),
+                buildMetricHtml('추천도', periodMetrics.rating),
+                buildMetricHtml('25E 매출', company.financials.sales),
+                buildMetricHtml('영업이익', company.financials.operatingProfit),
+                buildMetricHtml('PBR', company.financials.pbr),
+                buildMetricHtml('PER', company.financials.per)
+            ].join('');
+
+            return `
+                <div class="company-card">
+                    <div class="company-rank">${rank}위</div>
+                    <div class="company-name">${companyName}</div>
+                    <div class="company-sector">${company.sector}</div>
+                    <div class="company-info">${company.info}</div>
+                    <div class="company-metrics">${metrics}</div>
+                </div>
+            `;
+        }
+
+        function normalizeCompanyCards() {
+            const companyGrids = document.querySelectorAll('.period-content .company-grid');
+            const periodKeyById = {
+                'period-week': 'week',
+                'period-month': 'month',
+                'period-year': 'year',
+                'period-5year': 'year5',
+                'period-10year': 'year10'
+            };
+
+            companyGrids.forEach((grid) => {
+                const periodId = grid.closest('.period-content')?.id;
+                const periodKey = periodKeyById[periodId];
+
+                if (!periodKey) {
+                    return;
+                }
+
+                grid.innerHTML = companyRevenueOrder2025
+                    .map((companyName, index) => buildCompanyCard(companyName, periodKey, index + 1))
+                    .join('');
+            });
+
+            document.querySelectorAll('.period-content h3').forEach((heading) => {
+                if (heading.textContent.includes('한국 방산업체 Top 10')) {
+                    heading.textContent = heading.textContent.replace('매출 기준', '2025E 매출 기준');
+
+                    if (!heading.nextElementSibling?.classList.contains('company-disclaimer')) {
+                        const disclaimer = document.createElement('p');
+                        disclaimer.className = 'company-disclaimer';
+                        disclaimer.textContent = '매출/영업이익/PBR/PER는 2025년 예상 기준 참고치입니다.';
+                        heading.insertAdjacentElement('afterend', disclaimer);
+                    }
+                }
+            });
         }
 
         // 기간별 투자 분석 전환 함수
@@ -2376,261 +2520,7 @@
             element.classList.add('active');
         }
 
-        // 뉴스 데이터 저장소
-        let allNews = [];
-        let filteredNews = [];
-        let currentFilter = 'all';
-
-        // 방산 관련 키워드
-        const defenseKeywords = [
-            'military', 'defense', 'weapons', 'army', 'navy', 'air force',
-            'aerospace', 'aircraft', 'missile', 'drone', 'aircraft carrier',
-            '군사', '방위', '무기', '군대', '해군', '공군',
-            '항공우주', '항공기', '미사일', '드론', '항모',
-            'defense industry', 'arms', 'technology', 'tactical',
-            '방산', '군사기술', '전술', '전력'
-        ];
-
-        // 카테고리 매핑
-        const categoryMap = {
-            'military': ['military', 'army', 'navy', 'air force', '군사', '군대', '해군', '공군'],
-            'technology': ['technology', 'tactical', 'cyber', 'innovation', '기술', '전술', '혁신'],
-            'aerospace': ['aerospace', 'aircraft', 'space', 'aviation', '항공우주', '항공기', '우주', '항공']
-        };
-
-        // 시간 포맷
-        function formatTime(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
-
-            if (diffMins < 1) return '방금 전';
-            if (diffMins < 60) return `${diffMins}분 전`;
-            if (diffHours < 24) return `${diffHours}시간 전`;
-            if (diffDays < 7) return `${diffDays}일 전`;
-            
-            return date.toLocaleDateString('ko-KR');
-        }
-
-        // 뉴스 카드 생성
-        function createNewsCard(article) {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            
-            const imageUrl = article.urlToImage || '';
-            const title = article.title || 'No Title';
-            const description = article.description || '상세 내용은 원문을 참조하세요';
-            const source = article.source?.name || 'Unknown Source';
-            const url = article.url || '#';
-            const date = formatTime(article.publishedAt);
-
-            card.innerHTML = `
-                <div class="news-image">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="${title}" onerror="this.style.display='none'">` : '📰'}
-                </div>
-                <div class="news-content">
-                    <div class="news-source">${source}</div>
-                    <h3 class="news-title">${title}</h3>
-                    <p class="news-description">${description.substring(0, 150)}...</p>
-                    <div class="news-meta">
-                        <div class="news-date">📅 ${date}</div>
-                    </div>
-                    <a href="${url}" target="_blank" class="news-link">원문 보기 →</a>
-                </div>
-            `;
-            
-            return card;
-        }
-
-        // 뉴스 필터링
-        function filterNews() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            filteredNews = allNews.filter(article => {
-                const title = (article.title || '').toLowerCase();
-                const description = (article.description || '').toLowerCase();
-                const content = title + ' ' + description;
-                
-                let matchesSearch = !searchTerm || content.includes(searchTerm);
-                
-                if (currentFilter === 'all') {
-                    return matchesSearch;
-                } else {
-                    const keywords = categoryMap[currentFilter] || [];
-                    const matchesCategory = keywords.some(keyword => content.includes(keyword));
-                    return matchesSearch && matchesCategory;
-                }
-            });
-
-            renderNews();
-        }
-
-        // 뉴스 렌더링
-        function renderNews() {
-            const container = document.getElementById('newsContainer');
-            
-            if (filteredNews.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <h2>뉴스를 찾을 수 없습니다</h2>
-                        <p>다른 검색어를 시도하거나 필터를 변경해보세요</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = '';
-            filteredNews.forEach(article => {
-                container.appendChild(createNewsCard(article));
-            });
-
-            // 통계 업데이트
-            document.getElementById('newsCount').textContent = filteredNews.length;
-            const uniqueSources = new Set(filteredNews.map(n => n.source?.name));
-            document.getElementById('sourceCount').textContent = uniqueSources.size;
-        }
-
-        // 뉴스 가져오기 (프록시 사용)
-        async function fetchNews() {
-            const statusEl = document.getElementById('status');
-            statusEl.innerHTML = '<div class="loading"><div class="spinner"></div><span>뉴스 로드 중...</span></div>';
-
-            try {
-                // 다양한 뉴스 소스에서 방산 관련 뉴스 검색
-                const queries = [
-                    'military defense weapons',
-                    'aerospace aircraft technology',
-                    'defense industry news'
-                ];
-
-                const newsPromises = queries.map(query => {
-                    // NewsAPI 사용 (공개 프록시)
-                    const encodedQuery = encodeURIComponent(query);
-                    const apiUrl = `https://newsapi.org/v2/everything?q=${encodedQuery}&sortBy=publishedAt&language=en&pageSize=10`;
-                    
-                    // CORS 프록시 사용
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
-                    
-                    return fetch(proxyUrl)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.contents) {
-                                const parsed = JSON.parse(data.contents);
-                                return parsed.articles || [];
-                            }
-                            return [];
-                        })
-                        .catch(error => {
-                            console.log('API 호출 중 오류:', error);
-                            return [];
-                        });
-                });
-
-                const results = await Promise.all(newsPromises);
-                allNews = results.flat()
-                    .filter(article => article && article.title)
-                    .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-                    .slice(0, 50);
-
-                if (allNews.length === 0) {
-                    // API 오류 시 샘플 데이터 제공
-                    allNews = getSampleNews();
-                }
-
-                currentFilter = 'all';
-                document.querySelectorAll('.btn-filter').forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.dataset.country === 'all') btn.classList.add('active');
-                });
-
-                filterNews();
-                
-                const now = new Date().toLocaleTimeString('ko-KR');
-                statusEl.innerHTML = `<span style="color: #48bb78;">✓ 마지막 업데이트: ${now}</span>`;
-                document.getElementById('lastUpdate').textContent = now;
-
-                setTimeout(() => statusEl.innerHTML = '', 5000);
-
-            } catch (error) {
-                console.error('뉴스 로드 실패:', error);
-                allNews = getSampleNews();
-                filterNews();
-                statusEl.innerHTML = '<span style="color: #f56565;">오류: 샘플 데이터로 표시됩니다</span>';
-                setTimeout(() => statusEl.innerHTML = '', 5000);
-            }
-        }
-
-        // 샘플 뉴스 데이터
-        function getSampleNews() {
-            return [
-                {
-                    title: "Advanced Military Drone Technology Breaks New Records",
-                    description: "Latest generation military drones demonstrate unprecedented speed and payload capacity in recent field tests.",
-                    urlToImage: "https://via.placeholder.com/400x200/667eea/ffffff?text=Military+Drone",
-                    source: { name: "Defense Weekly" },
-                    publishedAt: new Date(Date.now() - 3600000).toISOString(),
-                    url: "https://example.com"
-                },
-                {
-                    title: "New Aerospace Technology Revolutionizes Combat Aircraft",
-                    description: "Defense contractors unveil cutting-edge aerospace technology for next-generation fighter jets.",
-                    urlToImage: "https://via.placeholder.com/400x200/764ba2/ffffff?text=Aircraft+Technology",
-                    source: { name: "Aerospace News" },
-                    publishedAt: new Date(Date.now() - 7200000).toISOString(),
-                    url: "https://example.com"
-                },
-                {
-                    title: "Global Military Spending Reaches Record Highs",
-                    description: "International defense spending surges as nations modernize their armed forces and invest in new weapons systems.",
-                    urlToImage: "https://via.placeholder.com/400x200/48bb78/ffffff?text=Military+Spending",
-                    source: { name: "Global Defense" },
-                    publishedAt: new Date(Date.now() - 10800000).toISOString(),
-                    url: "https://example.com"
-                },
-                {
-                    title: "Cyber Defense Technology Becomes Critical Priority",
-                    description: "Military organizations worldwide enhance cybersecurity measures as digital warfare threats continue to evolve.",
-                    urlToImage: "https://via.placeholder.com/400x200/f6ad55/ffffff?text=Cyber+Defense",
-                    source: { name: "Military Tech" },
-                    publishedAt: new Date(Date.now() - 14400000).toISOString(),
-                    url: "https://example.com"
-                },
-                {
-                    title: "Space-Based Defense Systems Under Development",
-                    description: "Multiple nations are investing in space-based defense systems and surveillance technology for strategic advantage.",
-                    urlToImage: "https://via.placeholder.com/400x200/9f7aea/ffffff?text=Space+Defense",
-                    source: { name: "Space Defense News" },
-                    publishedAt: new Date(Date.now() - 18000000).toISOString(),
-                    url: "https://example.com"
-                },
-                {
-                    title: "Naval Technology Innovations Transform Maritime Security",
-                    description: "Next-generation naval platforms and weapons systems enhance maritime defense capabilities worldwide.",
-                    urlToImage: "https://via.placeholder.com/400x200/38b2ac/ffffff?text=Naval+Tech",
-                    source: { name: "Naval Weekly" },
-                    publishedAt: new Date(Date.now() - 21600000).toISOString(),
-                    url: "https://example.com"
-                }
-            ];
-        }
-
-        // 이벤트 리스너
-        document.getElementById('searchInput').addEventListener('input', filterNews);
-
-        document.querySelectorAll('.btn-filter').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.country;
-                filterNews();
-            });
-        });
-
-        // 초기 로드
-        window.addEventListener('load', fetchNews);
+        document.addEventListener('DOMContentLoaded', normalizeCompanyCards);
     </script>
 </body>
 </html>
