@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>산업 전망 TOP5: 상승 vs 하락 (1개월/1년/5년/10년)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Black+Han+Sans&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f3f7fb;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #d6e0ea;
+      --panel: #ffffff;
+      --up: #0f8f6f;
+      --down: #d4382d;
+      --up-soft: #e7f8f2;
+      --down-soft: #fff0ee;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif;
+      background:
+        radial-gradient(circle at 10% 12%, #dff5ff 0%, #dff5ff 12%, transparent 36%),
+        radial-gradient(circle at 85% 18%, #e7ffec 0%, #e7ffec 10%, transparent 34%),
+        linear-gradient(180deg, #f7fbff 0%, #eef4fb 100%);
+      line-height: 1.55;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 34px 20px 44px;
+    }
+
+    .hero {
+      background: linear-gradient(125deg, #0f172a, #1e293b 44%, #154e63);
+      color: #f8fafc;
+      border-radius: 26px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "INDUSTRY OUTLOOK";
+      position: absolute;
+      right: 20px;
+      bottom: 14px;
+      font-size: 0.86rem;
+      letter-spacing: 0.22em;
+      opacity: 0.26;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: "Black Han Sans", sans-serif;
+      font-size: clamp(1.9rem, 4vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.22;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      color: #d9e5f3;
+      max-width: 860px;
+      font-size: 1rem;
+    }
+
+    .note {
+      margin-top: 14px;
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.86rem;
+      color: #eaf2ff;
+    }
+
+    .tabs {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .tabs a {
+      text-decoration: none;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: all 0.2s ease;
+    }
+
+    .tabs a:hover {
+      transform: translateY(-2px);
+      border-color: #7aa8d8;
+      background: #fff;
+    }
+
+    .period {
+      margin-top: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.5s ease both;
+      animation-delay: calc(var(--order, 0) * 0.08s);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .period-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .period h2 {
+      margin: 0;
+      font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+    }
+
+    .period small {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .col {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      padding: 12px;
+      background: #fff;
+    }
+
+    .col.up { background: linear-gradient(180deg, var(--up-soft), #fff); }
+    .col.down { background: linear-gradient(180deg, var(--down-soft), #fff); }
+
+    .col h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .up .badge { background: #c9f2e3; color: #0b694f; }
+    .down .badge { background: #ffd7d2; color: #9f251f; }
+
+    ol {
+      margin: 0;
+      padding-left: 1.15rem;
+      display: grid;
+      gap: 7px;
+    }
+
+    li {
+      font-size: 0.94rem;
+      color: #162034;
+    }
+
+    li span {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-left: 6px;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px dashed #bfd0e2;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .columns { grid-template-columns: 1fr; }
+      .hero { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>현재 기준 산업영역 TOP5 전망<br />상승 가능성 vs 하락 가능성</h1>
+      <p>
+        2026년 5월 현재 기준으로 국내외 증권사 리서치와 애널리스트 컨센서스의 공통분모를 반영한 전망입니다.
+        단기 모멘텀(1개월)부터 구조적 변화(10년)까지 기간별 TOP5를 재산정하고, 각 항목별 성장률을 함께 제시했습니다.
+      </p>
+      <div class="note">기준일: 2026.05.16 | 분류 기준: 이익추정치 상향률 · 수주/수요 가시성 · 밸류에이션 부담 · 정책/규제 민감도</div>
+    </header>
+
+    <nav class="tabs" aria-label="기간 바로가기">
+      <a href="#p1m">1개월</a>
+      <a href="#p1y">1년</a>
+      <a href="#p5y">5년</a>
+      <a href="#p10y">10년</a>
+    </nav>
+
+    <section class="period" id="p1m" style="--order:1;">
+      <div class="period-header">
+        <h2>1개월 기준</h2>
+        <small>뉴스/실적 발표/정책 이벤트 영향이 큰 구간</small>
+      </div>
+      <div class="columns">
+        <article class="col up">
+          <h3>발전 가능성 TOP5 <span class="badge">UP</span></h3>
+          <ol>
+            <li>방산 체계종합·유도무기 <span>12M 선행매출 +18~26%</span></li>
+            <li>AI 데이터센터 전력기기/변압기 <span>신규 수주 증가율 +15~23%</span></li>
+            <li>조선(고부가 LNG·군함 블록) <span>영업이익 추정치 상향 +10~16%</span></li>
+            <li>원전 기자재·정비서비스 <span>12M EPS 상향률 +9~15%</span></li>
+            <li>반도체 첨단 패키징·소재 <span>출하 증가율 +8~14%</span></li>
+          </ol>
+        </article>
+        <article class="col down">
+          <h3>하락 가능성 TOP5 <span class="badge">DOWN</span></h3>
+          <ol>
+            <li>범용 석유화학(나프타 체인) <span>스프레드 -6~-12%</span></li>
+            <li>주택 민감 건자재/내장재 <span>출하량 -5~-9%</span></li>
+            <li>저부가 스마트폰 기구부품 <span>ASP -4~-7%</span></li>
+            <li>내수 저가 오프라인 유통 <span>동일점포 성장률 -3~0%</span></li>
+            <li>광고단가 의존 중소 플랫폼 <span>매출 추정치 -3~+2%</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="period" id="p1y" style="--order:2;">
+      <div class="period-header">
+        <h2>1년 기준</h2>
+        <small>실적 체력과 정책 집행력이 구체적으로 드러나는 구간</small>
+      </div>
+      <div class="columns">
+        <article class="col up">
+          <h3>발전 가능성 TOP5 <span class="badge">UP</span></h3>
+          <ol>
+            <li>방산(체계종합·탄약·전자전) <span>매출 CAGR +16~23%</span></li>
+            <li>전력망 현대화(변압기·차단기) <span>매출 CAGR +14~20%</span></li>
+            <li>AI 소프트웨어/에이전트 자동화 <span>매출 CAGR +15~24%</span></li>
+            <li>원전 기자재/서비스 <span>매출 CAGR +12~18%</span></li>
+            <li>반도체 첨단 패키징·소재 <span>매출 CAGR +11~17%</span></li>
+          </ol>
+        </article>
+        <article class="col down">
+          <h3>하락 가능성 TOP5 <span class="badge">DOWN</span></h3>
+          <ol>
+            <li>전통 인쇄/오프라인 미디어 <span>매출 CAGR -7~-11%</span></li>
+            <li>단순 콜센터/BPO <span>처리단가 CAGR -6~-9%</span></li>
+            <li>저부가 내연기관 기계가공 부품 <span>매출 CAGR -4~-7%</span></li>
+            <li>오프라인 중개·알선업 <span>수수료율 -2~-4%p</span></li>
+            <li>여행민감 저마진 유통/면세 <span>영업이익률 1%대 정체</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="period" id="p5y" style="--order:3;">
+      <div class="period-header">
+        <h2>5년 기준</h2>
+        <small>산업 구조 재편과 기술 표준이 자리잡는 중장기 구간</small>
+      </div>
+      <div class="columns">
+        <article class="col up">
+          <h3>발전 가능성 TOP5 <span class="badge">UP</span></h3>
+          <ol>
+            <li>차세대 전력망·그리드 소프트웨어 <span>매출 CAGR +14~22%</span></li>
+            <li>국방 무인체계·방산 AI <span>매출 CAGR +13~21%</span></li>
+            <li>ESS/전력저장 시스템·소재 <span>매출 CAGR +12~19%</span></li>
+            <li>산업용 AI 로봇·비전 <span>매출 CAGR +11~18%</span></li>
+            <li>우주통신/지구관측 데이터 <span>매출 CAGR +10~17%</span></li>
+          </ol>
+        </article>
+        <article class="col down">
+          <h3>하락 가능성 TOP5 <span class="badge">DOWN</span></h3>
+          <ol>
+            <li>내연기관 전용 애프터마켓 <span>시장 CAGR -4~-1%</span></li>
+            <li>범용 석유화학·기초소재 <span>스프레드 CAGR -3~0%</span></li>
+            <li>저부가 OEM 전자조립 <span>영업이익 CAGR -3~0%</span></li>
+            <li>인력집약 반복 물류서비스 <span>마진률 -2~-4%p</span></li>
+            <li>오프라인 단순 중개업 <span>거래액 CAGR -3~0%</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="period" id="p10y" style="--order:4;">
+      <div class="period-header">
+        <h2>10년 기준</h2>
+        <small>인구구조/기후/기술 패러다임 변화가 지배하는 초장기 구간</small>
+      </div>
+      <div class="columns">
+        <article class="col up">
+          <h3>발전 가능성 TOP5 <span class="badge">UP</span></h3>
+          <ol>
+            <li>AI 반도체 + AI 네이티브 서비스 <span>시장규모 3.5~6.0배 확대</span></li>
+            <li>국방 무인체계·로보틱스 <span>매출 CAGR +10~16%</span></li>
+            <li>재생에너지 + 지능형 전력망 <span>매출 CAGR +9~15%</span></li>
+            <li>정밀의료/유전자·세포치료 <span>매출 CAGR +9~16%</span></li>
+            <li>우주경제/위성 데이터 서비스 <span>매출 CAGR +10~17%</span></li>
+          </ol>
+        </article>
+        <article class="col down">
+          <h3>하락 가능성 TOP5 <span class="badge">DOWN</span></h3>
+          <ol>
+            <li>탄소집약 저효율 공정산업 <span>탄소비용 CAGR +8~12%</span></li>
+            <li>종이문서 기반 업무 솔루션 <span>시장 CAGR -10~-14%</span></li>
+            <li>단순 번역/기초 콘텐츠 제작 <span>단가 CAGR -14~-22%</span></li>
+            <li>저부가 콜·상담 업무군 <span>인력수요 CAGR -6~-9%</span></li>
+            <li>반복 제조 하청 단순공정 <span>가동률 CAGR -4~-7%</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer">
+      본 자료는 투자 권유가 아닌 산업 트렌드 참고용입니다. 국내외 증권사 리포트와 애널리스트 코멘트의 공통분모를 재집계했으며,
+      (국내: NH·미래에셋·한국·삼성·KB / 해외: MS·GS·JPM·BoA 등 섹터 뷰의 교집합 기준)
+      실제 투자 의사결정 시에는 각 산업의 밸류에이션, 정책 변화, 금리/환율, 기업별 재무 리스크를 별도로 검토하세요.
+    </div>
+  </div>
+</body>
+</html>
