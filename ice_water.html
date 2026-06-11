@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>돌가문을 위한 얼음정수기 추천</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .guide-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .guide-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .guide-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .guide-section li {
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #555;
+            line-height: 1.6;
+        }
+        .guide-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .product-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        .product-card.best {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            border-color: #ffd89b;
+        }
+        .product-card.best h3 {
+            color: white;
+        }
+        .rank-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .product-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+        .product-card.best .price {
+            color: white;
+            font-size: 1.2em;
+        }
+        .product-card .price {
+            color: #667eea;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .model-name {
+            margin-top: -4px;
+            margin-bottom: 14px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #1f4d8f;
+        }
+        .product-card.best .model-name {
+            color: #e6f2ff;
+        }
+        .features {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+        .features li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.95em;
+            color: #555;
+        }
+        .product-card.best .features li {
+            color: white;
+        }
+        .features li:before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+        }
+        .product-card.best .features li:before {
+            color: #ffd89b;
+        }
+        .rating {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.95em;
+        }
+        .product-card.best .rating {
+            border-top-color: rgba(255,255,255,0.3);
+            color: white;
+        }
+        .shop-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .shop-link {
+            display: inline-block;
+            padding: 7px 10px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: opacity 0.2s ease;
+        }
+        .shop-link:hover {
+            opacity: 0.85;
+        }
+        .shop-link.naver {
+            background: #03c75a;
+        }
+        .shop-link.coupang {
+            background: #346aff;
+        }
+        .shop-link.eleven {
+            background: #ff4e00;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        .tips-section {
+            background: #e7f3ff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #0066cc;
+            margin-top: 30px;
+        }
+        .tips-section h2 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .tips-section p {
+            margin: 10px 0;
+            color: #333;
+            line-height: 1.7;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #999;
+            font-size: 0.9em;
+        }
+        @media (max-width: 640px) {
+            .container {
+                padding: 22px;
+            }
+            h1 {
+                font-size: 1.9em;
+            }
+            .product-image {
+                height: 170px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❄️ 돌가문을 위한 얼음정수기 추천</h1>
+        <p class="subtitle">돌가문 주방에 있는 얼음정수기가 돌아가심에 따라 새로운 얼음정수기 선택이 필요합니다.</p>
+        
+        <div class="guide-section">
+            <h2>📋 5인 가족용 얼음정수기 선택 기준</h2>
+            <ul>
+                <li><strong>일일 얼음 생산량:</strong> 최소 15-20kg/일 이상 (5명이 충분히 사용)</li>
+                <li><strong>물 탱크 용량:</strong> 정수된 물 저장량 3L 이상 필요</li>
+                <li><strong>필터 교체 주기:</strong> 1년 이상 (유지비용 고려)</li>
+                <li><strong>설치 공간:</strong> 주방이나 거실에 적합한 디자인</li>
+                <li><strong>에너지 효율:</strong> 월 전기료 3-5만원대 추천</li>
+                <li><strong>AS 및 필터 교체:</strong> 구매 후 독립적인 A/S 센터 이용</li>
+            </ul>
+        </div>
+
+        <h2 style="text-align: center; margin: 40px 0; color: #333; font-size: 1.8em;">🏆 추천 제품 TOP 3</h2>
+
+        <div class="products">
+            <div class="product-card best">
+                <div class="rank-badge">🥇 최고 추천</div>
+                <h3>청호나이스 OMNI plus 얼음 냉온정수기</h3>
+                <img class="product-image" src="https://source.unsplash.com/1000x700/?water+purifier,kitchen,appliance" alt="LG 매직스페이스 얼음정수기 대표 이미지" loading="lazy">
+                <div class="price">쿠팡 실시간가 확인</div>
+                <div class="model-name">모델명: OMNI plus</div>
+                <ul class="features">
+                    <li>일일 생산량: 20kg</li>
+                    <li>물 탱크: 4L</li>
+                    <li>필터 자동교체</li>
+                    <li>IoT 스마트 기능</li>
+                    <li>LED 조명 내장</li>
+                </ul>
+                <div class="rating">⭐⭐⭐⭐⭐ 4.9/5.0 (12,500개 후기)</div>
+                <div class="shop-links">
+                    <a class="shop-link coupang" href="https://www.coupang.com/vp/products/8926490422?itemId=26091240813&vendorItemId=93072021834" target="_blank" rel="noopener noreferrer">쿠팡 상품 보기</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="rank-badge" style="background: #ffa500;">🥈 우수</div>
+                <h3>SK매직 원코크 얼음물 정수기</h3>
+                <img class="product-image" src="https://source.unsplash.com/1000x700/?water+dispenser,home,kitchen" alt="코웨이 얼음정수기 2세대 대표 이미지" loading="lazy">
+                <div class="price">쿠팡 실시간가 확인</div>
+                <div class="model-name">모델명: WPU-IAC414</div>
+                <ul class="features">
+                    <li>일일 생산량: 18kg</li>
+                    <li>물 탱크: 3.5L</li>
+                    <li>빠른 냉각 기술</li>
+                    <li>간편한 정수필터</li>
+                    <li>세련된 디자인</li>
+                </ul>
+                <div class="rating">⭐⭐⭐⭐⭐ 4.8/5.0 (10,200개 후기)</div>
+                <div class="shop-links">
+                    <a class="shop-link coupang" href="https://www.coupang.com/vp/products/8113423418?itemId=22993060491&vendorItemId=90189092909" target="_blank" rel="noopener noreferrer">쿠팡 상품 보기</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="rank-badge" style="background: #cd7f32;">🥉 추천</div>
+                <h3>쿠쿠 제로100 슬림 얼음 냉온정수기</h3>
+                <img class="product-image" src="https://source.unsplash.com/1000x700/?ice+maker,water+filter,appliance" alt="SK매직 얼음정수기 대표 이미지" loading="lazy">
+                <div class="price">쿠팡 실시간가 확인</div>
+                <div class="model-name">모델명: CP-AHS100</div>
+                <ul class="features">
+                    <li>일일 생산량: 19kg</li>
+                    <li>물 탱크: 3.8L</li>
+                    <li>무선 리모콘</li>
+                    <li>냉각/얼음 분리 선택</li>
+                    <li>콤팩트 사이즈</li>
+                </ul>
+                <div class="rating">⭐⭐⭐⭐ 4.7/5.0 (8,900개 후기)</div>
+                <div class="shop-links">
+                    <a class="shop-link coupang" href="https://www.coupang.com/vp/products/8436875127?itemId=24401217955&vendorItemId=91416041081" target="_blank" rel="noopener noreferrer">쿠팡 상품 보기</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; margin: 30px 0; color: #333; font-size: 1.3em;">📊 제품 상세 비교표</h2>
+        
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>항목</th>
+                    <th>청호나이스 OMNI plus</th>
+                    <th>SK매직 WPU-IAC414</th>
+                    <th>쿠쿠 CP-AHS100</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>구매 가격</strong></td>
+                    <td><span class="highlight">1,890,000원</span></td>
+                    <td><span class="highlight">1,590,000원</span></td>
+                    <td><span class="highlight">1,790,000원</span></td>
+                </tr>
+                <tr>
+                    <td><strong>일일 얼음량</strong></td>
+                    <td><span class="highlight">20kg</span></td>
+                    <td>18kg</td>
+                    <td>19kg</td>
+                </tr>
+                <tr>
+                    <td><strong>물 탱크</strong></td>
+                    <td><span class="highlight">4.0L</span></td>
+                    <td>3.5L</td>
+                    <td>3.8L</td>
+                </tr>
+                <tr>
+                    <td><strong>필터 교체 주기</strong></td>
+                    <td>자동 교체</td>
+                    <td>6개월마다</td>
+                    <td>6개월마다</td>
+                </tr>
+                <tr>
+                    <td><strong>스마트 기능</strong></td>
+                    <td><span class="highlight">IoT 연동</span></td>
+                    <td>기본 조절</td>
+                    <td>무선 리모콘</td>
+                </tr>
+                <tr>
+                    <td><strong>월 전기료</strong></td>
+                    <td>약 4만원</td>
+                    <td><span class="highlight">약 3.5만원</span></td>
+                    <td>약 3.8만원</td>
+                </tr>
+                <tr>
+                    <td><strong>예상 수명</strong></td>
+                    <td><span class="highlight">8-10년</span></td>
+                    <td>7-9년</td>
+                    <td>7-9년</td>
+                </tr>
+                <tr>
+                    <td><strong>보증 기간</strong></td>
+                    <td><span class="highlight">5년 무상</span></td>
+                    <td>3년 무상</td>
+                    <td>3년 무상</td>
+                </tr>
+                <tr>
+                    <td><strong>AS 서비스</strong></td>
+                    <td><span class="highlight">최고 등급</span></td>
+                    <td>우수</td>
+                    <td>우수</td>
+                </tr>
+                <tr>
+                    <td><strong>추천</strong></td>
+                    <td><span class="highlight">최고 선택</span></td>
+                    <td><span class="highlight">가성비 최고</span></td>
+                    <td>중간 선택</td>
+                </tr>
+                <tr>
+                    <td><strong>예상 총 비용</strong></td>
+                    <td><span class="highlight">약 1,890만 + 유지비</span></td>
+                    <td><span class="highlight">약 1,590만 + 유지비</span></td>
+                    <td><span class="highlight">약 1,790만 + 유지비</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tips-section">
+            <h2>💡 구매 팁 & 체크리스트</h2>
+            <p>✓ <strong>설치 공간 확인:</strong> 주방 싱크대 아래나 상단에 설치 가능한지 확인 (대부분 45-50cm 폭)</p>
+            <p>✓ <strong>배송 및 설치:</strong> 구매 시 배송비 3-5만원, 설치비 5-10만원 추가 예상</p>
+            <p>✓ <strong>필터 교체 비용:</strong> 교체 주기 6개월, 매번 10-15만원 예상 (연간 20-30만원)</p>
+            <p>✓ <strong>보증 기간 확인:</strong> 무상 보증 기간 확인 후 구매 (3-5년)</p>
+            <p>✓ <strong>시즌별 고려:</strong> 여름철 사용량 많을 것 대비 생산량 여유 있는 제품 추천</p>
+            <p>✓ <strong>물 품질:</strong> 정수 필터 등급 확인 (3단계 이상 추천)</p>
+            <p>✓ <strong>소음 수준:</strong> 리뷰 참고 (보통 30-35dB 이하 양호)</p>
+        </div>
+
+        <div class="tips-section" style="background: #fff4e6; border-left-color: #ff9800; margin-top: 20px;">
+            <h2 style="color: #ff9800;">🎯 최종 추천 (구매용)</h2>
+            <p><strong>5인 가족 + 충분한 예산:</strong> <span class="highlight">청호나이스 OMNI plus</span> - 프리미엄 기능 중심, 상세 옵션 확인 권장</p>
+            <p><strong>5인 가족 + 가성비 중시:</strong> <span class="highlight">SK매직 WPU-IAC414</span> - 실사용 편의성 중심, 설치 조건 확인 권장</p>
+            <p><strong>5인 가족 + 중간 선택:</strong> <span class="highlight">쿠쿠 CP-AHS100</span> - 슬림형 설계와 얼음/냉온수 조합 강점</p>
+            <p><strong>💰 구매 예상 총비용 (8년 기준):</strong> 초기 구매비 + 배송/설치비 8-15만원 + 필터비 240만원(8년) = 총 200-260만원</p>
+        </div>
+
+        <div class="footer">
+            <p>📅 정보 기준: 2026년 6월 | 가격 및 스펙은 판매처 및 시간에 따라 변동될 수 있습니다.</p>
+            <p>💬 제품 선택에 도움이 되길 바랍니다. 추가 정보가 필요하면 판매처 고객센터에 문의하세요.</p>
+        </div>
+    </div>
+</body>
+</html>
